@@ -31,7 +31,6 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: db-claim
-      namespace: aulainfra
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "default"
