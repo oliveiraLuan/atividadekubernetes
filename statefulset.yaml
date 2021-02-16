@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mystatefulset
+spec:
+  selector:
+    matchLabels:
+      app: mystatefulset
+  serviceName: svc-mystatefulset
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mystatefulset
+    spec:
+      containers:
+      - name: mystatefulset
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        env:
+          - name : "MYSQL_ROOT_PASSWORD"
+            value : "root"
+          - name : "MYSQL_DATABASE"
+            value : "petclinic"
+          - name : "MYSQL_PASSWORD"
+            value : "root"
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: db-claim
+  volumeClaimTemplates:
+  - metadata:
+      name: db-claim
+      namespace: aulainfra
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "default"
+      resources:
+        requests:
+          storage: 1Gi
